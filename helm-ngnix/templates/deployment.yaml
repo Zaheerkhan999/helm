@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx-v1      
+  template:
+    metadata:
+      labels:
+        app: nginx-v1
+    spec:
+      containers:
+      - name: nginx-myapp
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        ports:
+        - containerPort: 80
+      # nodeSelector:
+      #   node: "3"
+      # # serviceAccount: jenkins
+      # serviceAccountName: jenkins
+      #   volumeMounts:
+      #     - mountPath: /var/www/html/
+      #       name: nginx-data1
+      # volumes:
+      #   - name: nginx-data1
+      #     persistentVolumeClaim:
+      #       claimName: nginx-data
+      # securityContext:
+      #   fsGroup: 2000
+      #   runAsUser: 1000
+      #   runAsGroup: 3000          
+
