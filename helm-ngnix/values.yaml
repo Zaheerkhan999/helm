@@ -49,7 +49,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: app.mediawiki.org            
+    - host: app.mediawiki.org           
       paths:
         - path: /
           pathType: ImplementationSpecific
