@@ -4,9 +4,9 @@ metadata:
   name: {{ .Values.service.name}}  
 spec:
   selector:
-    app: nginx-v1
+    app: {{ .Values.label }}
   ports:
-  - port: 80
-    targetPort: 80
-  type: LoadBalancer
+  - port: {{ .Values.service.sourceport}}
+    targetPort: {{ .Values.service.targetport}}
+  type: {{ .Values.service.type}}
   # externalTrafficPolicy: Local

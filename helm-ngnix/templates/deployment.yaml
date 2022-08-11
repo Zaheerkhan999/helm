@@ -6,32 +6,35 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: nginx-v1      
+      app: {{ .Values.label }} 
   template:
     metadata:
       labels:
-        app: nginx-v1
-    spec:
-      containers:
-      - name: nginx-myapp
+        app: {{ .Values.label }}
+    spec:      
+      containers: 
+      - name: {{ .Values.name}}
+        {{- with .Values.environmentvariable }}
+        env:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         resources:
             {{- toYaml .Values.resources | nindent 12 }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.containerPort}}
       # nodeSelector:
       #   node: "3"
-      # # serviceAccount: jenkins
-      # serviceAccountName: jenkins
-      #   volumeMounts:
-      #     - mountPath: /var/www/html/
-      #       name: nginx-data1
-      # volumes:
-      #   - name: nginx-data1
-      #     persistentVolumeClaim:
-      #       claimName: nginx-data
-      # securityContext:
-      #   fsGroup: 2000
-      #   runAsUser: 1000
-      #   runAsGroup: 3000          
+      {{- if .Values.persistence.enabled }}     
+        volumeMounts:
+          - mountPath: {{ .Values.volume.mount}}
+            name: {{ .Values.volume.name}}      
+      volumes:
+        - name: {{ .Values.volume.name}}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.name}}
+      {{- end }}
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 0           
 
