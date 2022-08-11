@@ -86,7 +86,9 @@ tolerations: []
 
 affinity: {}
 
-environmentvariable:
+envvariable:
+  enabled: false
+environmentvariable:         
   - name: MYSQL_DATABASE
     value: my_wiki
   - name: MYSQL_USER
